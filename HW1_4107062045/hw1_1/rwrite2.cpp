@@ -19,7 +19,7 @@ int main(){
 		mem[i]='1';	
 	}
 	
-	f1=fopen("./file.txt","w+");
+	f1=fopen("./write.txt","w+");
 	fseek(f1,0,SEEK_SET);
 	
 	gettimeofday(&start, &n);

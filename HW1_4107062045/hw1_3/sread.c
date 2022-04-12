@@ -18,14 +18,18 @@ int main(){
     struct timeval end;
     struct timeval n;
     unsigned long diff;
-    int* map_f1;
+    int *map_f1;
+    struct stat sb;
     
    	
     fd=open("file1.txt",O_CREAT | O_RDWR);
-    map_f1=(int*)mmap(NULL,filesize*sizeof(char),PROT_WRITE | PROT_READ, MAP_SHARED,fd,0);
-    //printf("%d",*map_f1);
+    fstat(fd,&sb);
+    map_f1=(int*)mmap(NULL,sb.st_size,PROT_WRITE | PROT_READ, MAP_SHARED,fd,0);
+    if(map_f1 == MAP_FAILED) 
+        printf("error");
     
-    /*
+    
+    
     lseek(*map_f1,0,SEEK_SET);
     gettimeofday(&start, &n);
     for(int i=0;i<filesize/(4*1024);i++){
@@ -34,7 +38,7 @@ int main(){
     gettimeofday(&end,&n);
     diff = 1000000*(end.tv_sec-start.tv_sec)+end.tv_usec-start.tv_usec;
     printf("Sequential Read took %ld (us)\n", diff);
-    */
+    
     munmap(map_f1,filesize*sizeof(char));
     close(fd);
 
